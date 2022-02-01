@@ -1,18 +1,20 @@
 export default class SwapiService {
+
   _apiBase = 'https://swapi.dev/api';
 
   getResource = async (url) => {
     const res = await fetch(`${this._apiBase}${url}`);
 
     if (!res.ok) {
-      throw new Error(`Could not fetch ${url}` + `, received ${res.status}`);
+      throw new Error(`Could not fetch ${url}` +
+        `, received ${res.status}`)
     }
     return await res.json();
   };
 
   getAllPeople = async () => {
     const res = await this.getResource(`/people/`);
-    return res.results.map(this._transformPerson).slice(0, 5);
+    return res.results.map(this._transformPerson);
   };
 
   getPerson = async (id) => {
@@ -22,7 +24,7 @@ export default class SwapiService {
 
   getAllPlanets = async () => {
     const res = await this.getResource(`/planets/`);
-    return res.results.map(this._transformPlanet).slice(0, 5);
+    return res.results.map(this._transformPlanet);
   };
 
   getPlanet = async (id) => {
@@ -32,11 +34,11 @@ export default class SwapiService {
 
   getAllStarships = async () => {
     const res = await this.getResource(`/starships/`);
-    return res.results.map(this._transformStarship).slice(0, 5);
+    return res.results.map(this._transformStarship);
   };
 
   getStarship = async (id) => {
-    const starship = await this.getResource(`/starships/${id}/`);
+    const starship = this.getResource(`/starships/${id}/`);
     return this._transformStarship(starship);
   };
 
@@ -49,13 +51,9 @@ export default class SwapiService {
     return {
       id: this._extractId(planet),
       name: planet.name,
-      diameter: planet.diameter,
-      gravity: planet.gravity,
-      orbitalPeriod: planet.orbital_period,
       population: planet.population,
-      terrain: planet.terrain,
-      climate: planet.climate,
       rotationPeriod: planet.rotation_period,
+      diameter: planet.diameter
     };
   };
 
@@ -69,8 +67,8 @@ export default class SwapiService {
       length: starship.length,
       crew: starship.crew,
       passengers: starship.passengers,
-      cargoCapacity: starship.cargo_capacity,
-    };
+      cargoCapacity: starship.cargo_capacity
+    }
   };
 
   _transformPerson = (person) => {
@@ -79,7 +77,7 @@ export default class SwapiService {
       name: person.name,
       gender: person.gender,
       birthYear: person.birth_year,
-      eyeColor: person.eye_color,
-    };
-  };
+      eyeColor: person.eye_color
+    }
+  }
 }
